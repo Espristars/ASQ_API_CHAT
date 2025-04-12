@@ -1,11 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
-import enum
 
-class ChatType(str, enum.Enum):
-    personal = "personal"
-    group = "group"
 
 class MessageCreate(BaseModel):
     chat_id: int
@@ -24,13 +20,12 @@ class MessageResponse(BaseModel):
         orm_mode = True
 
 class ChatCreate(BaseModel):
-    name: Optional[str]
-    type: ChatType
+    creator_id: int
+    second_email: str
 
 class ChatResponse(BaseModel):
     id: int
     name: Optional[str]
-    type: ChatType
 
     class Config:
         orm_mode = True
@@ -57,7 +52,7 @@ class TokenData(BaseModel):
     email: Optional[str] = None
 
 class UserCreate(BaseModel):
-    name: str
+    username: str
     email: str
     password: str
 
@@ -68,3 +63,12 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class SearchChat(BaseModel):
+    user_id: int
+    name: str
+
+class AddUserToGroup(BaseModel):
+    user_id: int
+    group_id: int
+    email: str
