@@ -9,7 +9,7 @@ from sqlalchemy.future import select
 from app.models import User
 from app.database import get_db
 
-SECRET_KEY = "your-secret-key"
+SECRET_KEY = "NG5U32385GN5G2U3NP223"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -32,13 +32,13 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def get_user(db: AsyncSession, email: str):
-    query = select(User).where(User.email == email)
+async def get_user(db: AsyncSession, username: str):
+    query = select(User).where(User.name == username)
     result = await db.execute(query)
     return result.scalar_one_or_none()
 
-async def authenticate_user(db: AsyncSession, email: str, password: str):
-    user = await get_user(db, email)
+async def authenticate_user(db: AsyncSession, username: str, password: str):
+    user = await get_user(db, username)
     if not user:
         return False
     if not verify_password(password, user.password):
